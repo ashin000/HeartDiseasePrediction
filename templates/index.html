@@ -2,84 +2,124 @@
 <html>
 <head>
     <title>Heart Disease Prediction</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f2f6fb;
         }
+
+        .navbar {
+            background: #1e3c72;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
         .container {
-            width: 900px;
+            max-width: 1100px;
             margin: 30px auto;
+            padding: 20px;
         }
+
         .card {
             background: white;
             padding: 25px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-        h2 {
-            color: #333;
-            margin-bottom: 15px;
+
+        h3 {
+            margin-top: 0;
+            color: #1e3c72;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
         }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin: 6px 0;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        button:hover {
-            background: #0056b3;
-        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            width: 80%;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16305a;
+        }
+
+        .upload-box {
+            text-align: center;
         }
     </style>
 </head>
+
 <body>
+
+<div class="navbar">
+     Heart Disease Prediction Dashboard
+</div>
 
 <div class="container">
 
-    <!-- MANUAL INPUT -->
     <div class="card">
-        <h2>Manual Heart Disease Prediction</h2>
-        <form method="POST" action="/predict">
+        <h3>Patient Medical Details</h3>
+
+        <form method="post" action="/predict">
+            <input type="hidden" name="manual">
+
             <div class="grid">
-                <input name="age" placeholder="Age" required>
-                <input name="sex" placeholder="Sex (1=Male,0=Female)" required>
-                <input name="cp" placeholder="Chest Pain Type" required>
-                <input name="trestbps" placeholder="Resting BP" required>
-                <input name="chol" placeholder="Cholesterol" required>
-                <input name="fbs" placeholder="Fasting Blood Sugar" required>
-                <input name="restecg" placeholder="Rest ECG" required>
-                <input name="thalach" placeholder="Max Heart Rate" required>
-                <input name="exang" placeholder="Exercise Angina" required>
-                <input name="oldpeak" placeholder="Oldpeak" required>
-                <input name="slope" placeholder="Slope" required>
-                <input name="ca" placeholder="CA" required>
-                <input name="thal" placeholder="Thal" required>
+                <input name="age" placeholder="Age">
+                <input name="sex" placeholder="Sex (1=Male, 0=Female)">
+                <input name="cp" placeholder="Chest Pain Type">
+                <input name="trestbps" placeholder="Resting BP">
+
+                <input name="chol" placeholder="Cholesterol">
+                <input name="fbs" placeholder="Fasting Blood Sugar">
+                <input name="restecg" placeholder="Rest ECG">
+                <input name="thalach" placeholder="Max Heart Rate">
+
+                <input name="exang" placeholder="Exercise Angina">
+                <input name="oldpeak" placeholder="Oldpeak">
+                <input name="slope" placeholder="Slope">
+                <input name="ca" placeholder="CA">
+
+                <input name="thal" placeholder="Thal">
             </div>
-            <button type="submit">Predict</button>
+
+            <button type="submit">Predict Heart Disease</button>
         </form>
     </div>
 
-    <!-- IMAGE INPUT -->
-    <div class="card">
-        <h2>Upload Lab Report (OCR)</h2>
-        <form method="POST" action="/predict" enctype="multipart/form-data">
-            <input type="file" name="report" accept="image/*" required>
-            <button type="submit">Upload & Predict</button>
+    <div class="card upload-box">
+        <h3>Upload Lab Report</h3>
+
+        <form method="post" action="/predict" enctype="multipart/form-data">
+            <input type="file" name="report" required>
+            <button type="submit">Upload & Analyze</button>
         </form>
     </div>
 
