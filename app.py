@@ -10,11 +10,10 @@ import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
-# Load model & scaler
-model = pickle.load(open("models/heart_model.pkl", "rb"))
-scaler = pickle.load(open("models/scaler.pkl", "rb"))
 
-# ---------- CV FUNCTIONS ----------
+model = pickle.load(open("models/heart_model.pkl", "rb"))
+FEATURES = pickle.load(open("models/features.pkl", "rb"))  # strict feature order
+
 
 def extract_text(image_file):
     image = Image.open(image_file).convert("RGB")
@@ -24,29 +23,27 @@ def extract_text(image_file):
 
 def extract_values(text):
     values = {}
-    age = re.search(r'Age[:\s]+(\d+)', text)
-    chol = re.search(r'Cholesterol[:\s]+(\d+)', text)
-    bp = re.search(r'BP[:\s]+(\d+)', text)
-
-    if age: values["age"] = int(age.group(1))
-    if chol: values["chol"] = int(chol.group(1))
-    if bp: values["trestbps"] = int(bp.group(1))
+    patterns = {
+        "age": r"Age[:\s]+(\d+)",
+        "chol": r"Cholesterol[:\s]+(\d+)",
+        "trestbps": r"BP[:\s]+(\d+)"
+    }
+    for key, pattern in patterns.items():
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            values[key] = int(match.group(1))
     return values
 
-# ---------- GRAPH ----------
 
 def create_graph(chol, bp):
-    if not os.path.exists("static"):
-        os.makedirs("static")
-
-    plt.figure(figsize=(5,3))
+    os.makedirs("static", exist_ok=True)
+    plt.figure(figsize=(5, 3))
     plt.bar(["Cholesterol", "Blood Pressure"], [chol, bp])
     plt.title("Heart Health Parameters")
     plt.tight_layout()
     plt.savefig("static/result_graph.png")
     plt.close()
 
-# ---------- ROUTES ----------
 
 @app.route("/")
 def index():
@@ -55,52 +52,58 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    # Manual input
     if "manual" in request.form:
-        data = [
-            int(request.form["age"]),
-            int(request.form["sex"]),
-            int(request.form["cp"]),
-            float(request.form["trestbps"]),
-            float(request.form["chol"]),
-            int(request.form["fbs"]),
-            int(request.form["restecg"]),
-            float(request.form["thalach"]),
-            int(request.form["exang"]),
-            float(request.form["oldpeak"]),
-            int(request.form["slope"]),
-            int(request.form["ca"]),
-            int(request.form["thal"])
-        ]
-        chol = float(request.form["chol"])
-        bp = float(request.form["trestbps"])
+        input_dict = {
+            "age": int(request.form["age"]),
+            "sex": int(request.form["sex"]),
+            "cp": int(request.form["cp"]),
+            "trestbps": int(request.form["trestbps"]),
+            "chol": int(request.form["chol"]),
+            "fbs": int(request.form["fbs"]),
+            "restecg": int(request.form["restecg"]),
+            "thalach": int(request.form["thalach"]),
+            "exang": int(request.form["exang"]),
+            "oldpeak": float(request.form["oldpeak"]),
+            "slope": int(request.form["slope"]),
+            "ca": int(request.form["ca"]),
+            "thal": int(request.form["thal"]),
+        }
 
-    # CV input
     else:
         image = request.files["report"]
         text = extract_text(image)
         values = extract_values(text)
 
-        chol = values.get("chol", 200)
-        bp = values.get("trestbps", 120)
+        input_dict = {
+            "age": values.get("age", 50),
+            "sex": 1,
+            "cp": 0,
+            "trestbps": values.get("trestbps", 120),
+            "chol": values.get("chol", 200),
+            "fbs": 0,
+            "restecg": 1,
+            "thalach": 150,
+            "exang": 0,
+            "oldpeak": 1.0,
+            "slope": 1,
+            "ca": 0,
+            "thal": 2,
+        }
 
-        data = [
-            values.get("age", 50),
-            1, 0, bp, chol,
-            0, 1, 150, 0, 1.0, 1, 0, 2
-        ]
+    chol = input_dict["chol"]
+    bp = input_dict["trestbps"]
 
-    input_df = pd.DataFrame([data], columns=[
-        "age","sex","cp","trestbps","chol",
-        "fbs","restecg","thalach","exang",
-        "oldpeak","slope","ca","thal"
-    ])
+    if chol < 100 or chol > 400 or bp < 80 or bp > 250:
+        return render_template(
+            "result.html",
+            result="Invalid clinical values detected",
+            chol=chol,
+            bp=bp
+        )
 
-    # Scale input
-    input_scaled = scaler.transform(input_df)
+    input_df = pd.DataFrame([input_dict], columns=FEATURES)
 
-    # Predict
-    pred = model.predict(input_scaled)[0]
+    pred = model.predict(input_df)[0]
     result = "Heart Disease Detected" if pred == 1 else "No Heart Disease"
 
     create_graph(chol, bp)
