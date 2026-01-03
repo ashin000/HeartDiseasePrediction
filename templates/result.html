@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f2f6fb;
+        }
+
+        .navbar {
+            background: #1e3c72;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .result-safe {
+            color: green;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .result-danger {
+            color: red;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+     Prediction Result
+</div>
+
+<div class="container">
+    <div class="card">
+
+        {% if "Detected" in result %}
+            <div class="result-danger">{{ result }}</div>
+        {% else %}
+            <div class="result-safe">{{ result }}</div>
+        {% endif %}
+
+        <p><b>Cholesterol:</b> {{ chol }}</p>
+        <p><b>Blood Pressure:</b> {{ bp }}</p>
+
+        <img src="/static/result_graph.png" alt="Health Graph">
+
+        <br>
+        <a href="/">Back to Dashboard</a>
+
+    </div>
+</div>
+
+</body>
+</html>

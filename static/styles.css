@@ -1,0 +1,87 @@
+/* ---------- GLOBAL ---------- */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f7fb;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+hr {
+    margin: 30px 0;
+}
+
+/* ---------- CONTAINER ---------- */
+.container {
+    width: 420px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+/* ---------- INPUTS ---------- */
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* ---------- BUTTON ---------- */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* ---------- RESULT ---------- */
+.result {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+.safe {
+    color: green;
+    font-weight: bold;
+}
+
+.danger {
+    color: red;
+    font-weight: bold;
+}
+
+/* ---------- GRAPH ---------- */
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+}
+
+/* ---------- LINK ---------- */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #3498db;
+}

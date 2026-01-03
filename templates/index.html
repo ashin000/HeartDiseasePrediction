@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f2f6fb;
+        }
+
+        .navbar {
+            background: #1e3c72;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #1e3c72;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            width: 80%;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #16305a;
+        }
+
+        .upload-box {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    Heart Disease Prediction Dashboard
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Patient Medical Details</h3>
+
+        <form method="post" action="/predict">
+            <input type="hidden" name="manual">
+
+            <div class="grid">
+                <input name="age" placeholder="Age">
+                <input name="sex" placeholder="Sex (1=Male, 0=Female)">
+                <input name="cp" placeholder="Chest Pain Type">
+                <input name="trestbps" placeholder="Resting BP">
+
+                <input name="chol" placeholder="Cholesterol">
+                <input name="fbs" placeholder="Fasting Blood Sugar">
+                <input name="restecg" placeholder="Rest ECG">
+                <input name="thalach" placeholder="Max Heart Rate">
+
+                <input name="exang" placeholder="Exercise Angina">
+                <input name="oldpeak" placeholder="Oldpeak">
+                <input name="slope" placeholder="Slope">
+                <input name="ca" placeholder="CA">
+
+                <input name="thal" placeholder="Thal">
+            </div>
+
+            <button type="submit">Predict Heart Disease</button>
+        </form>
+    </div>
+
+    <div class="card upload-box">
+        <h3>Upload Lab Report (Computer Vision)</h3>
+
+        <form method="post" action="/predict" enctype="multipart/form-data">
+            <input type="file" name="report" required>
+            <button type="submit">Upload & Analyze</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
