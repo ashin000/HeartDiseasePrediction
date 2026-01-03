@@ -9,6 +9,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pytesseract
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from flask import send_file
+import datetime
 
 
 app = Flask(__name__)
@@ -46,6 +50,34 @@ def create_graph(chol, bp):
     plt.tight_layout()
     plt.savefig("static/result_graph.png")
     plt.close()
+
+def generate_pdf(result, chol, bp):
+    if not os.path.exists("static"):
+        os.makedirs("static")
+
+    file_path = "static/heart_report.pdf"
+    c = canvas.Canvas(file_path, pagesize=A4)
+    width, height = A4
+
+    c.setFont("Helvetica-Bold", 18)
+    c.drawString(50, height - 50, "Heart Disease Prediction Report")
+
+    c.setFont("Helvetica", 12)
+    c.drawString(50, height - 100, f"Date: {datetime.datetime.now().strftime('%d-%m-%Y %H:%M')}")
+
+    c.drawString(50, height - 140, f"Cholesterol: {chol}")
+    c.drawString(50, height - 160, f"Blood Pressure: {bp}")
+
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(50, height - 200, f"Prediction Result: {result}")
+
+    if os.path.exists("static/result_graph.png"):
+        c.drawImage("static/result_graph.png", 50, height - 450, width=400, height=200)
+
+    c.showPage()
+    c.save()
+
+    return file_path
 
 # ---------- ROUTES ----------
 
@@ -103,12 +135,22 @@ def predict():
 
     create_graph(chol, bp)
 
+    pdf_path = generate_pdf(result, chol, bp)
+
     return render_template(
         "result.html",
         result=result,
         chol=chol,
         bp=bp
     )
+
+@app.route("/download")
+def download_report():
+    return send_file(
+        "static/heart_report.pdf",
+        as_attachment=True
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
