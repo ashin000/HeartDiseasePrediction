@@ -8,3 +8,4 @@ pytesseract
 matplotlib
 gunicorn
 reportlab
+reportlab==3.6.12
