@@ -1,36 +1,57 @@
 import pandas as pd
 import pickle
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
-# Load dataset
+
 data = pd.read_excel("heart.csv.xlsx")
 
-# Features & target
-X = data.drop("target", axis=1)
+FEATURES = [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "exang",
+    "oldpeak",
+    "slope",
+    "ca",
+    "thal"
+]
+
+X = data[FEATURES]
 y = data["target"]
 
-# Train-test split
+
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# ---------------- SCALING ----------------
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
 
-# ---------------- MODEL ----------------
 model = RandomForestClassifier(
-    n_estimators=200,
-    max_depth=10,
+    n_estimators=300,
+    max_depth=None,
+    min_samples_split=5,
+    min_samples_leaf=2,
     random_state=42
 )
-model.fit(X_train_scaled, y_train)
 
-# Save model & scaler
-pickle.dump(model, open("models/heart_model.pkl", "wb"))
-pickle.dump(scaler, open("models/scaler.pkl", "wb"))
+model.fit(X_train, y_train)
 
-print(" Model and Scaler saved successfully")
+
+y_pred = model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+print(f"Model Accuracy: {acc:.2f}")
+
+
+with open("models/heart_model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
+with open("models/features.pkl", "wb") as f:
+    pickle.dump(FEATURES, f)
+
+print("Model and feature list saved successfully")
