@@ -2,88 +2,69 @@
 <html>
 <head>
     <title>Prediction Result</title>
-
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: #f2f6fb;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
         }
-
-        .navbar {
-            background: #1e3c72;
-            color: white;
-            padding: 18px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
         .container {
-            max-width: 900px;
+            width: 700px;
             margin: 40px auto;
-            padding: 20px;
+            text-align: center;
         }
-
         .card {
             background: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-
-        .result-safe {
-            color: green;
+        h2 {
+            color: #333;
+        }
+        .result {
             font-size: 22px;
-            font-weight: bold;
-        }
-
-        .result-danger {
+            margin: 20px 0;
             color: red;
-            font-size: 22px;
-            font-weight: bold;
         }
-
         img {
-            margin-top: 20px;
-            max-width: 100%;
+            width: 300px;
+            margin: 20px 0;
         }
-
-        a {
+        a, button {
             display: inline-block;
-            margin-top: 25px;
+            margin: 10px;
+            padding: 10px 15px;
             text-decoration: none;
-            color: #1e3c72;
-            font-weight: bold;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        a:hover, button:hover {
+            background: #0056b3;
         }
     </style>
 </head>
-
 <body>
-
-<div class="navbar">
-     Prediction Result
-</div>
 
 <div class="container">
     <div class="card">
+        <h2>Heart Disease Prediction Result</h2>
 
-        {% if "Detected" in result %}
-            <div class="result-danger">{{ result }}</div>
-        {% else %}
-            <div class="result-safe">{{ result }}</div>
-        {% endif %}
+        <div class="result">
+            {% if prediction == 1 %}
+                Disease Detected
+            {% else %}
+                 No Disease Detected
+            {% endif %}
+        </div>
 
-        <p><b>Cholesterol:</b> {{ chol }}</p>
-        <p><b>Blood Pressure:</b> {{ bp }}</p>
-
-        <img src="/static/result_graph.png" alt="Health Graph">
+        <img src="/static/result_graph.png" alt="Result Graph">
 
         <br>
         <a href="/">Back to Dashboard</a>
-
+        <a href="/download">Download Report (PDF)</a>
     </div>
 </div>
 
