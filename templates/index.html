@@ -47,12 +47,17 @@
             gap: 15px;
         }
 
+        .field {
+            display: flex;
+            flex-direction: column;
+            font-size: 13px;
+        }
+
         input {
             padding: 10px;
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 14px;
-            width: 80%;
         }
 
         button {
@@ -85,40 +90,92 @@
 
 <div class="container">
 
+    <!-- MANUAL INPUT -->
     <div class="card">
         <h3>Patient Medical Details</h3>
 
         <form method="post" action="/predict">
-            <input type="hidden" name="manual">
+            <input type="hidden" name="manual" value="1">
 
             <div class="grid">
-                <input name="age" placeholder="Age">
-                <input name="sex" placeholder="Sex (1=Male, 0=Female)">
-                <input name="cp" placeholder="Chest Pain Type">
-                <input name="trestbps" placeholder="Resting BP">
 
-                <input name="chol" placeholder="Cholesterol">
-                <input name="fbs" placeholder="Fasting Blood Sugar">
-                <input name="restecg" placeholder="Rest ECG">
-                <input name="thalach" placeholder="Max Heart Rate">
+                <div class="field">
+                    <label>Age</label>
+                    <input type="number" name="age" required>
+                </div>
 
-                <input name="exang" placeholder="Exercise Angina">
-                <input name="oldpeak" placeholder="Oldpeak">
-                <input name="slope" placeholder="Slope">
-                <input name="ca" placeholder="CA">
+                <div class="field">
+                    <label>Sex (1 = Male, 0 = Female)</label>
+                    <input type="number" name="sex" required>
+                </div>
 
-                <input name="thal" placeholder="Thal">
+                <div class="field">
+                    <label>Chest Pain Type (0–3)</label>
+                    <input type="number" name="cp" required>
+                </div>
+
+                <div class="field">
+                    <label>Resting Blood Pressure</label>
+                    <input type="number" name="trestbps" required>
+                </div>
+
+                <div class="field">
+                    <label>Cholesterol</label>
+                    <input type="number" name="chol" required>
+                </div>
+
+                <div class="field">
+                    <label>Fasting Blood Sugar</label>
+                    <input type="number" name="fbs" required>
+                </div>
+
+                <div class="field">
+                    <label>Rest ECG</label>
+                    <input type="number" name="restecg" required>
+                </div>
+
+                <div class="field">
+                    <label>Max Heart Rate</label>
+                    <input type="number" name="thalach" required>
+                </div>
+
+                <div class="field">
+                    <label>Exercise Angina</label>
+                    <input type="number" name="exang" required>
+                </div>
+
+                <div class="field">
+                    <label>Oldpeak</label>
+                    <input type="number" step="0.1" name="oldpeak" required>
+                </div>
+
+                <div class="field">
+                    <label>Slope</label>
+                    <input type="number" name="slope" required>
+                </div>
+
+                <div class="field">
+                    <label>CA</label>
+                    <input type="number" name="ca" required>
+                </div>
+
+                <div class="field">
+                    <label>Thal</label>
+                    <input type="number" name="thal" required>
+                </div>
+
             </div>
 
             <button type="submit">Predict Heart Disease</button>
         </form>
     </div>
 
+    <!-- OCR INPUT -->
     <div class="card upload-box">
-        <h3>Upload Lab Report</h3>
+        <h3>Upload Lab Report (OCR)</h3>
 
         <form method="post" action="/predict" enctype="multipart/form-data">
-            <input type="file" name="report" required>
+            <input type="file" name="report" accept="image/*" required>
             <button type="submit">Upload & Analyze</button>
         </form>
     </div>

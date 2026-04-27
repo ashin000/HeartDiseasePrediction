@@ -7,5 +7,5 @@ opencv-python-headless
 pytesseract
 matplotlib
 gunicorn
-reportlab
 reportlab==3.6.12
+openpyxl
