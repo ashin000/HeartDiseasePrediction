@@ -70,7 +70,9 @@
 <div class="container">
     <div class="card">
 
-        {% if "Detected" in result %}
+        {% if "Heart Disease Detected" in result %}
+            <div class="result-danger">{{ result }}</div>
+        {% elif "Invalid" in result %}
             <div class="result-danger">{{ result }}</div>
         {% else %}
             <div class="result-safe">{{ result }}</div>
